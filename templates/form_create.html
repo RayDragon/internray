@@ -1,0 +1,122 @@
+<form id="f_{{ formno }}" method="post" action="{{ action }}"><!-- class="w3-panel"  id="form_{{ formno }}"-->
+    <input type="hidden" id='f_{{ formno }}_csrf' name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    <h1 class="w3-opacity ">{{ head }}</h1>
+        {% for element in elements %}
+            {% if element.0 == "input" or element.0 == "i" %}
+                <p><input
+                        class="w3-input"
+                        type="{{ element.1 }}"
+                        name = "{{ element.2 }}"
+                        id = "f_{{ formno }}_{{ forloop.counter }}"
+                        placeholder="{{ element.3 }}"
+                        value="{{ element.5 }}"
+                        oninput="validate_form({{ formno }});"
+                        data-mtype="{{ element.4 }}"
+
+                >
+            {% elif element.0 == "textarea" or element.0 == "a" %}
+                <textarea
+                    class="w3-input"
+                    title="{{ element.3 }}"
+                    id = "f_{{ formno }}_{{ forloop.counter }}"
+                    oninput="validate_form({{ formno }});"
+                    data-mtype="{{ element.4 }}"
+                    name="{{ element.2 }}"
+                    ></textarea>
+                <span class="w3-text-blue w3-small w3-right">{{ element.3 }}</span><br>
+            {% endif %}
+                <span class="w3-text-red w3-small" id="f_{{ formno }}_{{ forloop.counter }}_s"></span></p>
+
+        {% endfor %}
+    <p><input id="f_{{ formno }}_s" type="button" onclick="form_submit({{ formno }})" name="submit" value="{{ sbtn_text }}" class="w3-button w3-ripple w3-disabled" disabled></p>
+<script>
+
+    function log(mess){ console.log(mess);}
+    function validate_form(form_no) {
+        //alert('hahaha');
+        var i=1;
+        var valid=true;
+        while($('#f_'+form_no+'_'+i).val() !== undefined){
+            var message='';
+            var element = $('#f_'+form_no+'_'+i);
+            var type = element.data('mtype');
+
+            if(type.indexOf('r') !== -1) {
+                if(element.val() === '') {
+                    valid=false;
+                    message = '* required field';
+                }
+
+            }
+
+            if(type.indexOf('e') !== -1){
+                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                if(re.test(element.val()) === false){
+                    valid=false;
+                    message = '* enter a valid email';
+
+                }
+            }
+
+                $('#f_'+form_no+'_'+i+'_s').html(message);
+            if(!valid){
+                $('#f_'+form_no+'_'+i).addClass('w3-text-red');
+                $('#f_'+form_no+'_'+i).removeClass('w3-text-green');
+            }
+            else{
+                $('#f_'+form_no+'_'+i).addClass('w3-text-green');
+                $('#f_'+form_no+'_'+i).removeClass('w3-text-red');
+            }
+
+            i++;
+        }
+        if(!valid){
+                $('#f_'+form_no+'_s').enable=(false);
+                $('#f_'+form_no+'_s').removeClass('w3-green');
+                $('#f_'+form_no+'_s').addClass('w3-disabled');
+                $('#f_'+form_no+'_s').prop('disabled', true);
+
+            }
+            else{
+                $('#f_'+form_no+'_s').enable=(true);
+                $('#f_'+form_no+'_s').addClass('w3-green');
+                $('#f_'+form_no+'_s').removeClass('w3-disabled');
+                $('#f_'+form_no+'_s').prop('disabled', false);
+
+            }
+
+
+        return valid;
+    }
+    function form_submit(form_no) {
+        if(validate_form(form_no)){
+            var form=$('#f_'+form_no);
+            var a = form[0], data={};
+            for(i=0; i<a.length; i++)
+                data[$("#"+a[i].id).attr('name')] = $("#"+a[i].id).val();
+            var action = form.attr('action');
+            $.post(action, data, function(da, status){
+                log(da);
+                if(status === 404){alert('network problem');}
+                if(da['result']==='pass'){
+                    //alert( JSON.stringify(data, null, 5));
+                    if(da['headto']==='#r'){//refresh
+                        location.reload();
+
+                    }
+                    else if(da['headto' === '#s']){
+                        //do predefined function
+                        {{ onsucess }}
+                    }
+                    else {
+                        //go to data['headto']
+                        window.location.href = da['headto'];
+                    }
+
+                }
+                else alert('Wrong value provided');
+            },'json' );
+        }
+    }
+</script>
+</form>

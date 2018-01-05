@@ -1,0 +1,26 @@
+<style>
+    ::-webkit-scrollbar {
+    width: 3px;
+    height: 1px;
+}
+::-webkit-scrollbar-button {
+    background: #54af51
+}
+::-webkit-scrollbar-track-piece {
+    background: #54af51
+}
+::-webkit-scrollbar-thumb {
+    background: #000000
+}​
+</style>
+<script>
+    function Deletetdl(id) {
+        var data={};
+        if(confirm("Are you sure to delete this")){
+        data[$('#f_1_csrf').attr('name') ]=$('#f_1_csrf').val();
+        data['id']=id;
+        $.post('./deltdl', data,function (data) {
+            if(data==='deleted'){ location.reload();}
+        });}
+    }
+</script>

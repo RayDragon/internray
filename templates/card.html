@@ -1,0 +1,12 @@
+<div class="w3-container w3-{{ color }}" style="min-width: 200px;">
+    <header><h1 class="w3-opacity w3-center">
+        {{ head }}
+    </h1>
+    </header>
+    <div class="w3-center">
+        {# autoescape off #}
+            {{ body|safe }}
+        {# endautoescape #}
+    </div>
+</div>
+

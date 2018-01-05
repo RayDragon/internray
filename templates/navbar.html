@@ -1,0 +1,25 @@
+<div class="w3-bar w3-{{ color }}">
+    {% for item in items %}
+        {% if item.0 == 'd' %}
+            <div class="w3-dropdown-hover w3-mobile">
+                <button class="w3-button">{{ item.1 }}</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    {% for li in item.2 %}
+                    <a href="{{ li.1 }}" class="w3-mobile w3-bar-item w3-button">{{ li.0 }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        {% elif item.0 == 'r' %}
+            <a href="{{ item.2 }}"
+               class="w3-mobile w3-bar-item w3-button {% if selected == item.1 %}w3-border-bottom w3-border-blue {% endif %}w3-right">{{ item.1 }}</a>
+        {% elif item.0 == 'fb_login' %}
+            <div class="fb-login-button w3-mobile w3-bar-item w3-button w3-right" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-show-faces="false" data-auto-logout-link="true" data-use-continue-as="true"></div>
+
+
+        {% else %}
+            <a href="{{ item.1 }}" class="w3-bar-item w3-mobile
+            {% if selected == item.0 %}w3-leftbar w3-border-bottom w3-border-blue {% endif %}
+            w3-button">{{ item.0 }}</a>
+        {% endif %}
+    {% endfor %}
+</div>

@@ -1,0 +1,25 @@
+{% autoescape off %}
+{% if type == 'beign' %}
+    <div class="w3-row{{ add }}">
+        {{ data }}
+    </div>
+{% elif type == 'row' %}
+    {% for data in elements %}
+        {% if data.0 == '1/2' %}
+            <div class="w3-half">{{ data.1 }}</div>
+        {% elif data.0 == '1/3'%}
+            <div class="w3-third">{{ data.1 }}</div>
+        {% elif data.0 == '1/4'%}
+            <div class="w3-quarter">{{ data.1 }}</div>
+        {% elif data.0 == '2/3'%}
+            <div class="w3-twothird">{{ data.1 }}</div>
+        {% elif data.0 == '3/4'%}
+            <div class="w3-threequarter">{{ data.1 }}</div>
+        {% elif data.0 == 'rest'%}
+            <div class="w3-rest">{{ data.1 }}</div>
+
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% endautoescape %}
