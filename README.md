@@ -16,4 +16,4 @@ go to https://internray.herokuapp.com
 ## Note
 -   Django is used for development taking care of security
 -   w3.css is used for faster and lighter web-pages
--   Template PageMakes of my personal library is used which is open-source 
+-   Template PageMaker of my personal library is used which is open-source 

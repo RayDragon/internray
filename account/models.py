@@ -54,7 +54,8 @@ def signup(request):
     user.set_password(request.POST.get("password", "#"))
     if User.objects.filter(email=user.email).count() == 1:
         return HttpResponse('{"result":"fail", "message":"User already exists"}')
-    return HttpResponse('{"result":"pass", "headto":"./account"}')
+    user.save()
+    return HttpResponse('{"result":"pass", "headto":"#m", "message":"Signup successful, login to continue -> "}')
     
 
 def login(request):

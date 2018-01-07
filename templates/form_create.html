@@ -35,7 +35,12 @@
               <h3>Error!</h3>
               <p id="f_{{ formno }}_em"></p>
     </div>
-
+    <div class="w3-panel w3-green w3-display-container" id="f_{{ formno }}_sd" style="display: none;">
+            <span onclick="this.parentElement.style.display='none'"
+                class="w3-button w3-green w3-large w3-display-topright">&times;</span>
+              <h3>Sucess!</h3>
+              <p id="f_{{ formno }}_sm"></p>
+    </div>
     <p><input id="f_{{ formno }}_s" type="button" onclick="form_submit({{ formno }})" name="submit" value="{{ sbtn_text }}" class="w3-button w3-ripple w3-disabled" disabled></p>
 
 
@@ -115,9 +120,24 @@
                         location.reload();
 
                     }
-                    else if(da['headto' === '#s']){
+                    else if(da['headto'] === '#s'){
                         //do predefined function
                         {{ onsucess }}
+                    }
+                    else if(da['headto'] === '#m'){
+                        //show message
+                        $('#f_'+ form_no +'_sm').html(da['message']);
+                        $('#f_'+ form_no +'_sd').show();
+                        //emptying the form
+                        for(var i=1; i<a.length-1; i++)
+                        {
+                            var el = $("#"+a[i].id);
+                            el.val('');
+                            el.removeClass('w3-text-green');
+                        }
+                        $("#"+a[a.length-1].id).removeClass('w3-green');
+                        $("#"+a[a.length-1].id).attr('disabled', true);
+
                     }
                     else {
                         //go to data['headto']

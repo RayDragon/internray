@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'account',
     'calender'
 ]
+#
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
