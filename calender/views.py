@@ -25,7 +25,7 @@ def home(request):
     ], selected='To-do-list', color='black'))
     pg.add_to_body(pg.get_row([
         ['1/4', "<br>"+memobox],
-        ['3/4', lists]
+        ['3/4', "<br>"+lists]
     ]))
     return HttpResponse(pg.get_page("Calender"))
 
