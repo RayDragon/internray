@@ -1,4 +1,5 @@
 <form id="f_{{ formno }}" method="post" action="{{ action }}"><!-- class="w3-panel"  id="form_{{ formno }}"-->
+
     <input type="hidden" id='f_{{ formno }}_csrf' name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     <h1 class="w3-opacity ">{{ head }}</h1>
         {% for element in elements %}
@@ -28,8 +29,18 @@
                 <span class="w3-text-red w3-small" id="f_{{ formno }}_{{ forloop.counter }}_s"></span></p>
 
         {% endfor %}
+    <div class="w3-panel w3-red w3-display-container" id="f_{{ formno }}_ed" style="display: none;">
+            <span onclick="this.parentElement.style.display='none'"
+                class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+              <h3>Error!</h3>
+              <p id="f_{{ formno }}_em"></p>
+    </div>
+
     <p><input id="f_{{ formno }}_s" type="button" onclick="form_submit({{ formno }})" name="submit" value="{{ sbtn_text }}" class="w3-button w3-ripple w3-disabled" disabled></p>
-<script>
+
+
+
+    <script>
 
     function log(mess){ console.log(mess);}
     function validate_form(form_no) {
@@ -114,7 +125,10 @@
                     }
 
                 }
-                else alert('Wrong value provided');
+                else {
+                    $('#f_'+ form_no +'_em').html(da['message']);
+                    $('#f_'+ form_no +'_ed').show();
+                }
             },'json' );
         }
     }

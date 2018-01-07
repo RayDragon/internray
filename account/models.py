@@ -2,9 +2,10 @@ from django.db import models
 from django.contrib.auth.hashers import PBKDF2PasswordHasher, SHA1PasswordHasher
 from django.http import HttpResponse, HttpResponseRedirect
 
+
 class User(models.Model):
     name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=60)
+    email = models.EmailField(max_length=60, unique=True)
     password = models.CharField(max_length=120)
     salt = models.CharField(max_length=20)
     fbid = models.CharField(max_length=15, null=True)
@@ -51,9 +52,10 @@ def signup(request):
     user.name = request.POST.get("name", "#")
     user.email = request.POST.get("email", "#")
     user.set_password(request.POST.get("password", "#"))
-    user.save()
+    if User.objects.filter(email=user.email).count() == 1:
+        return HttpResponse('{"result":"fail", "message":"User already exists"}')
     return HttpResponse('{"result":"pass", "headto":"./account"}')
-
+    
 
 def login(request):
     email = request.POST.get('email', '#')
@@ -65,7 +67,7 @@ def login(request):
             request.session['uid'] = user.id
 
         return HttpResponse('{"result":"pass", "headto":"./account"}')
-    return HttpResponse('{"result":"fail", "message":"error occured"}')
+    return HttpResponse('{"result":"fail", "message":"wrong credentials"}')
 
 
 def isLogged(request):
